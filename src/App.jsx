@@ -4,17 +4,19 @@ import { ResetButton } from "./Components/ResetButton"
 import { WinnerModal } from "./Components/WinnerModal"
 import { GameBoard } from "./Components/GameBoard"
 import { TurnIndicator } from "./Components/TurnIndicator"
-import { updateBoard } from "./utils/board"
+import { boardInitialState, turnInitialState, updateBoard } from "./utils/board"
+import { resetGameLS } from "./utils/storage"
 
 function App() {
-  const [ board, setBoard ] = useState(Array(9).fill(null))
-  const [ turn, setTurn ] = useState(TURNS.X)
+  const [ board, setBoard ] = useState(boardInitialState)
+  const [ turn, setTurn ] = useState(turnInitialState)
   const [ winner, setWinner ] = useState(null);
 
   const resetGame = () =>{
     setBoard(Array(9).fill(null));
     setTurn(TURNS.X);
     setWinner(null)
+    resetGameLS();
   }
 
   const update = (index) =>{

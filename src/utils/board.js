@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
 import { TURNS, WINNER_COMBOS } from "../constants";
+import { saveGameToLS } from "./storage";
 const checkWinner = (board) =>{
     for (const combo of WINNER_COMBOS) {
       const [a, b, c] = combo;
@@ -34,5 +35,19 @@ const updateBoard = ({board, setBoard, winner, setWinner, turn, setTurn, index }
    //update new turn state
    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
    setTurn(newTurn)
+
+   //SaveGame in LS
+   saveGameToLS({board: newBoard, turn: newTurn})
 }
-export { checkWinner, checkEndGame, updateBoard }
+
+const boardInitialState = () =>{
+  const localStorageBoard = window.localStorage.getItem('board')
+  return localStorageBoard ? JSON.parse(localStorageBoard) : Array(9).fill(null)
+}
+
+const turnInitialState = () =>{
+  const localStorageTurn = window.localStorage.getItem('turn')
+  return localStorageTurn ?? TURNS.X
+}
+
+export { checkWinner, checkEndGame, updateBoard, boardInitialState, turnInitialState }
